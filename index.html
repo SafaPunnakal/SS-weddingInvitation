@@ -1733,38 +1733,42 @@ function openInvitation() {
 
             })
 
-            .then(function () {
+           .then(function () {
 
-                rsvpMessage.textContent =
-                    "Thank you! Your RSVP has been submitted. Please send the WhatsApp confirmation below.";
+    submitButton.textContent = "RSVP SUBMITTED";
 
-                submitButton.textContent = "RSVP SUBMITTED";
+    /* DECLINED: no WhatsApp message */
+    if (formData.attendance === "No") {
 
+        rsvpMessage.textContent =
+            "Thank you for letting us know. You will be missed, and we keep you in our duas.";
 
-                /* PREPARE WHATSAPP MESSAGE */
+        whatsappLink.style.display = "none";
+        whatsappLink.href = "#";
 
-                let whatsappMessage =
-                    "Wedding RSVP - Safa & Shaheem\n\n" +
-                    "Guest Name: " + formData.name + "\n" +
-                    "Attendance: " + formData.attendance;
+        return;
+    }
 
-                if (formData.attendance === "Yes") {
+    /* ACCEPTED: prepare WhatsApp message */
+    rsvpMessage.textContent =
+        "Thank you! Your RSVP has been submitted. Please send the WhatsApp confirmation below.";
 
-                    whatsappMessage +=
-                        "\nNumber of Guests: " + formData.guests;
+    let whatsappMessage =
+        "Wedding RSVP - Safa & Shaheem\n\n" +
+        "Guest Name: " + formData.name + "\n" +
+        "Attendance: " + formData.attendance +
+        "\nNumber of Guests: " + formData.guests;
 
-                }
+    const whatsappURL =
+        "https://wa.me/" +
+        phoneNumber +
+        "?text=" +
+        encodeURIComponent(whatsappMessage);
 
-                const whatsappURL =
-                    "https://wa.me/" +
-                    phoneNumber +
-                    "?text=" +
-                    encodeURIComponent(whatsappMessage);
+    whatsappLink.href = whatsappURL;
+    whatsappLink.style.display = "block";
 
-                whatsappLink.href = whatsappURL;
-                whatsappLink.style.display = "block";
-
-            })
+})
 
             .catch(function (error) {
 
@@ -1784,4 +1788,5 @@ function openInvitation() {
 
 </body>
 </html>
+
 
